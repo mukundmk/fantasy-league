@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Fantasy League</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.png') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+        <script>
+            $(document).ready(function(){
+                $("#tab1").click(function(){
+                    $("#row2").hide()
+                    $("#tab2").removeClass("active");
+                    $("#row3").hide();
+                    $("#tab3").removeClass("active");
+                    $("#row1").show();
+                    $("#tab1").addClass("active");
+                });
+                $("#tab2").click(function(){
+                    $("#row1").hide().removeClass("active");
+                    $("#tab1").removeClass("active");
+                    $("#row3").hide().removeClass("active");
+                    $("#tab3").removeClass("active");
+                    $("#row2").show().addClass("active");
+                    $("#tab2").addClass("active");
+                });
+                $("#tab3").click(function(){
+                    $("#row1").hide().removeClass("active");
+                    $("#tab1").removeClass("active");
+                    $("#row2").hide().removeClass("active");
+                    $("#tab2").removeClass("active");
+                    $("#row3").show().addClass("active");
+                    $("#tab3").addClass("active");
+                });
+            });
+        </script>
+        <nav class="navbar navbar-toggleable-md navbar-inverse" style="background-color: #38003c;">
+            <span class="navbar-brand">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" height="60" class="d-inline-block align-top" alt="" />
+            </span>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <span class="nav-link">Fantasy League</span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </head>
+    <body style="line-height:1.1">
+        <div class="container">
+            <p>
+            <div>
+                <ul class="nav nav-tabs justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link active noselect" id="tab1">League</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link noselect" id="tab2">Playoffs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link noselect" id="tab3">Fixtures</a>
+                    </li>
+                </ul>
+            </div>
+            <p>
+            <div class="row" id="row1">
+                <div class="col-md-8 offset-md-2">
+                    <table class="table">
+                        <thead class="thead">
+                            <tr>
+                                <th>Position</th>
+                                <th>Team</th>
+                                <th>Wins</th>
+                                <th>Losses</th>
+                                <th>Draws</th>
+                                <th>Points</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody">
+                            {% for i in data['scoreboard'] %}
+                            <tr class="row{{ loop.index }}">
+                                <th scope="row">{{ loop.index }}</th>
+                                <td class="team">{{ i['team'] }}</td>
+                                <td>{{ i['wins'] }}</td>
+                                <td>{{ i['losses'] }}</td>
+                                <td>{{ i['draws'] }}</td>
+                                <td>{{ i['points'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="row2" style="display:none;">
+                <div class="col-md-12">
+                    <div class="row no-gutters">
+                        <div class="col-md-2 offset-md-5">
+                            <div class="input-group">
+                                <div class="form-control" style="font-size: 0.75rem;{% if data['playoffs'][2]['team1'] == data['playoffs'][2]['winner'] %}{{ win_fc }} {% endif %}">{{ data['playoffs'][2]['team1'] }}</div>
+                                <span class="input-group-addon" style="width: 50px;padding:5px;align:center;{% if data['playoffs'][2]['team1'] == data['playoffs'][2]['winner'] %}{{ win_sp }} {% endif %}">
+                                    {{ data['playoffs'][2]['score_team1'] }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-1"><hr style="height: 1px; background-color: #a9a9a9"></div>
+                        <div class="col-md-1" style="border-left: 2px solid #a9a9a9;margin-top: 1.4%;"></div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-md-2 offset-md-1">
+                            <div class="input-group">
+                                <div class="form-control" style="font-size: 0.75rem;{% if data['playoffs'][0]['team1'] == data['playoffs'][0]['winner'] %}{{ win_fc }} {% endif %}">{{ data['playoffs'][0]['team1'] }}</div>
+                                <span class="input-group-addon" style="width: 50px;padding:5px;align:center;{% if data['playoffs'][0]['team1'] == data['playoffs'][0]['winner'] %}{{ win_sp }} {% endif %}">
+                                    {{ data['playoffs'][0]['score_team1'] }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-1"><hr style="height: 1px; background-color: #a9a9a9"></div>
+                        <div class="col-md-1" style="border-left: 2px solid #a9a9a9;margin-top: 1.4%;"></div>
+                        <div class="col-md-1 offset-md-3" style="border-left: 2px solid #a9a9a9;"></div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-md-1 offset-md-4" style="border-left: 2px solid #a9a9a9;"><hr style="height: 1px; background-color: #a9a9a9"></div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <div class="form-control" style="font-size: 0.75rem;{% if data['playoffs'][2]['team2'] == data['playoffs'][2]['winner'] %}{{ win_fc }} {% endif %}">{{ data['playoffs'][2]['team2'] }}</div>
+                                <span class="input-group-addon" style="width: 50px;padding:5px;align:center;{% if data['playoffs'][2]['team2'] == data['playoffs'][2]['winner'] %}{{ win_sp }} {% endif %}">
+                                    {{ data['playoffs'][2]['score_team2'] }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-1"><hr style="height: 1px; background-color: #a9a9a9"></div>
+                        <div class="col-md-1" style="border-left: 2px solid #a9a9a9;"></div>
+
+                    </div>
+                    <div class="row no-gutters" style="height:50px;">
+                        <div class="col-md-2 offset-md-1">
+                            <div class="input-group">
+                                    <div class="form-control" style="font-size: 0.75rem;{% if data['playoffs'][0]['team2'] == data['playoffs'][0]['winner'] %}{{ win_fc }} {% endif %}">{{ data['playoffs'][0]['team2'] }}</div>
+                                <span class="input-group-addon" style="width: 50px;padding:5px;align:center;{% if data['playoffs'][0]['team2'] == data['playoffs'][0]['winner'] %}{{ win_sp }} {% endif %}">
+                                    {{ data['playoffs'][0]['score_team2'] }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-1"><hr style="height: 1px; background-color: #a9a9a9"></div>
+                        <div class="col-md-1" style="border-left: 2px solid #a9a9a9;margin-bottom: 2.9%;"></div>
+                        <div class="col-md-1 offset-md-3" style="border-left: 2px solid #a9a9a9;margin-bottom: 2.9%;"><hr style="height: 1px; background-color: #a9a9a9"></div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <div class="form-control" style="font-size: 0.75rem;{% if data['playoffs'][4]['team1'] == data['playoffs'][4]['winner'] %}{{ win_fc }} {% endif %}">{{ data['playoffs'][4]['team1'] }}</div>
+                                <span class="input-group-addon" style="width: 50px;padding:5px;align:center;{% if data['playoffs'][4]['team1'] == data['playoffs'][4]['winner'] %}{{ win_sp }} {% endif %}">
+                                    {{ data['playoffs'][4]['score_team1'] }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row no-gutters">
+                        <p></p>
+                    </div>
+                    <div class="row no-gutters" style="height:50px;">
+                        <div class="col-md-2 offset-md-1">
+                            <div class="input-group">
+                                <div class="form-control" style="font-size: 0.75rem;{% if data['playoffs'][1]['team1'] == data['playoffs'][1]['winner'] %}{{ win_fc }} {% endif %}">{{ data['playoffs'][1]['team1'] }}</div>
+                                <span class="input-group-addon" style="width: 50px;padding:5px;align:center;{% if data['playoffs'][1]['team1'] == data['playoffs'][1]['winner'] %}{{ win_sp }} {% endif %}">
+                                    {{ data['playoffs'][1]['score_team1'] }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-1"><hr style="height: 1px; background-color: #a9a9a9"></div>
+                        <div class="col-md-1" style="border-left: 2px solid #a9a9a9;margin-top: 1.4%;"></div>
+                        <div class="col-md-1 offset-md-2" style="border-right: 2px solid #a9a9a9;margin-top: 1.4%;left: 2px;"></div>
+                        <div class="col-md-1"><hr style="height: 1px; background-color: #a9a9a9;"></div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <div class="form-control" style="font-size: 0.75rem;{% if data['playoffs'][4]['team2'] == data['playoffs'][4]['winner'] %}{{ win_fc }} {% endif %}">{{ data['playoffs'][4]['team2'] }}</div>
+                                <span class="input-group-addon" style="width: 50px;padding:5px;align:center;{% if data['playoffs'][4]['team2'] == data['playoffs'][4]['winner'] %}{{ win_sp }} {% endif %}">
+                                    {{ data['playoffs'][4]['score_team2'] }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-md-1 offset-md-4" style="border-left: 2px solid #a9a9a9;"><hr style="height: 1px; background-color: #a9a9a9"></div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <div class="form-control" style="font-size: 0.75rem;{% if data['playoffs'][3]['team2'] == data['playoffs'][3]['winner'] %}{{ win_fc }} {% endif %}">{{ data['playoffs'][3]['team2'] }}</div>
+                                <span class="input-group-addon" style="width: 50px;padding:5px;align:center;{% if data['playoffs'][3]['team2'] == data['playoffs'][3]['winner'] %}{{ win_sp }} {% endif %}">
+                                    {{ data['playoffs'][3]['score_team2'] }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-1"><hr style="height: 1px; background-color: #a9a9a9"></div>
+                        <div class="col-md-1" style="border-left: 2px solid #a9a9a9;"></div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-md-2 offset-md-1">
+                            <div class="input-group">
+                                <div class="form-control" style="font-size: 0.75rem;{% if data['playoffs'][1]['team2'] == data['playoffs'][1]['winner'] %}{{ win_fc }} {% endif %}">{{ data['playoffs'][1]['team2'] }}</div>
+                                <span class="input-group-addon" style="width: 50px;padding:5px;align:center;{% if data['playoffs'][1]['team2'] == data['playoffs'][1]['winner'] %}{{ win_sp }} {% endif %}">
+                                    {{ data['playoffs'][1]['score_team2'] }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-1"><hr style="height: 1px; background-color: #a9a9a9"></div>
+                        <div class="col-md-1" style="border-left: 2px solid #a9a9a9;margin-bottom: 1.4%;"></div>
+                        <div class="col-md-1 offset-md-3" style="border-left: 2px solid #a9a9a9;"></div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-md-2 offset-md-5">
+                            <div class="input-group">
+                                <div class="form-control" style="font-size: 0.75rem;{% if data['playoffs'][3]['team1'] == data['playoffs'][3]['winner'] %}{{ win_fc }} {% endif %}">{{ data['playoffs'][3]['team1'] }}</div>
+                                <span class="input-group-addon" style="width: 50px;padding:5px;align:center;{% if data['playoffs'][3]['team1'] == data['playoffs'][3]['winner'] %}{{ win_sp }} {% endif %}">
+                                    {{ data['playoffs'][3]['score_team1'] }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-1"><hr style="height: 1px; background-color: #a9a9a9"></div>
+                        <div class="col-md-1" style="border-left: 2px solid #a9a9a9;margin-bottom: 1.4%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="row3" style="display:none;">
+                <div class="col-md-12" style="font-size: 0.875rem;">
+                    {% for i in range(1, weeks+1) %}
+                        {% for j in data['fixtures'][i|string] %}
+                            <div class="row">
+                                <div class="col-md-2 offset-md-1"><b>Week #{{ i }}</b></div>
+                                <div class="col-md-3" style="text-align: right;">{{ j['team1'] }}</div>
+                                <div class="col-md-1" style="text-align: right;"><span class="badge" style="background-color:#a9a9a9;width:45px;height:18px;">{{ j['score_team1'] }}</span></div>
+                                <div class="col-md-1"><span class="badge" style="background-color:#a9a9a9;width:45px;height:18px;">{{ j['score_team2'] }}</span></div>
+                                <div class="col-md-4">{{ j['team2'] }}</div>
+
+                            </div>
+                            {% if 'team3' in j %}
+                                <div class="row">
+                                    <div class="col-md-2 offset-md-6" style="text-align: center;"><span class="badge" style="background-color:#a9a9a9;width:45px;height:18px;;">{{ j['score_team3'] }}</span></div>
+                                </div>
+                                <p>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-5" style="text-align: center;">{{ j['team3'] }}</div>
+                                </div>
+                            {% endif %}
+                            <hr>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

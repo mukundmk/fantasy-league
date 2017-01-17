@@ -1,0 +1,25 @@
+1,Team Diego,Team Washington
+1,Team Tim,Team Adan
+1,Team Maddie,Team Lauren
+1,Team Marvin,Team Carlos
+1,Team Hiller,Team Geno,Team Chris
+2,Team Diego,Team Tim
+2,Team Washington,Team Adan
+2,Team Hiller,Team Chris
+2,Team Maddie,Team Marvin
+2,Team Carlos,Team Geno,Team Lauren
+3,Team Tim,Team Washington
+3,Team Geno,Team Adan
+3,Team Maddie,Team Lauren,Team Diego
+3,Team Hiller,Team Carlos
+3,Team Chris,Team Marvin
+4,Team Washington,Team Lauren,Team Adan
+4,Team Hiller,Team Diego
+4,Team Marvin,Team Lauren
+4,Team Tim,Team Chris
+4,Team Geno,Team Maddie
+5,Team Washington,Team Hiller
+5,Team Maddie,Team Chris
+5,Team Adan,Team Diego,Team Marvin
+5,Team Geno,Team Carlos
+5,Team Tim,Team Lauren
