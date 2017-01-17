@@ -8,9 +8,9 @@
 - check config.py in app for file paths/names, can edit this at any point
 - place files in data folder(if config.py unedited)
 - installation:
-	* pip install -r requirements.txt
-	* python run.py clean
+	* <code> pip install -r requirements.txt </code>
+	* <code> python run.py clean </code>
 - to run:
-	* python run.py
+	* <code> python run.py </code>
 - to add lucky pick:
-	* python run.py lucky 'team name in quotes' (e.g. python run.py lucky 'Team Tim')
+	* <code> python run.py lucky 'team name in quotes' </code> (e.g. <code> python run.py lucky 'Team Tim' </code>)
