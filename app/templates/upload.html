@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Fantasy League</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.png') }}">
+        <script>
+            $(document).ready(function() {
+                $("#btn").click(function() {
+                    $("#file").click();
+                });
+                $("#file").on('change', function() {
+                    label = $("#file").val().replace(/\\/g, '/').replace(/.*\//, '');
+                    $("#file-input").val(label);
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="modal fade show" tabindex="-1" role="dialog" style="display:block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload File</h5>
+                    </div>
+                    <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <div class="form-group row">
+                                <label for="filename" class="col-4 col-form-label">Week:</label>
+                                <div class="col-8">
+                                    <select class="form-control" id="filename" name="filename">
+                                        <option value="fixtures.csv">Fixtures</option>
+                                        <option value="1.xlsx">Week 1</option>
+                                        <option value="2.xlsx">Week 2</option>
+                                        <option value="3.xlsx">Week 3</option>
+                                        <option value="4.xlsx">Week 4</option>
+                                        <option value="5.xlsx">Week 5</option>
+                                        <option value="6.xlsx">Playoffs 1</option>
+                                        <option value="7.xlsx">PlayOffs 2</option>
+                                        <option value="8.xlsx">Finals</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="file" class="col-4 col-form-label">File:</label>
+                                <div class="col-8">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="No file selected" id="file-input">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" type="button" id="btn">Browse</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary"/>
+                        </div>
+                        <input type="file" id="file" name="file" style="display:none;">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

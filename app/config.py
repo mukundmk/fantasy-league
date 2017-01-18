@@ -1,5 +1,6 @@
 __author__ = 'mukundmk'
 
+SECRET_KEY = ''
 
 WEEKS = 5
 

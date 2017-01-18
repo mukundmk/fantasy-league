@@ -2,7 +2,8 @@ import os
 import json
 
 from app import app
-from flask import render_template
+from flask import render_template, redirect, url_for, request, flash
+from werkzeug.utils import secure_filename
 from collections import defaultdict
 from xlrd import open_workbook
 
@@ -302,3 +303,76 @@ def index():
     win_sp = 'color:white;background:#38003c;border:1px solid #38003c;'
     win_fc = 'border:1px solid #38003c;'
     return render_template('index.html', data=data, win_sp=win_sp, win_fc=win_fc, weeks=app.config['WEEKS'])
+
+
+@app.route('/clean')
+def clean():
+    data = dict()
+    data['version'] = -1
+    data['fixtures'] = dict()
+    data['teams'] = list()
+    data['scoreboard'] = list()
+    data['playoffs'] = list()
+    data['playoffs'].append({'team1': 'TBD', 'team2': 'TBD', 'score_team1': '', 'score_team2': '', 'winner': ''})
+    data['playoffs'].append({'team1': 'TBD', 'team2': 'TBD', 'score_team1': '', 'score_team2': '', 'winner': ''})
+    data['playoffs'].append({'team1': 'TBD', 'team2': 'TBD', 'score_team1': '', 'score_team2': '', 'winner': ''})
+    data['playoffs'].append({'team1': 'TBD', 'team2': 'TBD', 'score_team1': '', 'score_team2': '', 'winner': ''})
+    data['playoffs'].append({'team1': 'TBD', 'team2': 'TBD', 'score_team1': '', 'score_team2': '', 'winner': ''})
+
+    with open(app.config['JSON_FILE'], 'w') as f:
+        json.dump(data, f)
+
+    return redirect(url_for('index'))
+
+
+@app.route('/lucky', methods=['GET', 'POST'])
+def lucky():
+    if request.method == 'GET':
+        return render_template('lucky.html')
+
+    elif request.method == 'POST':
+        if 'team' not in request.form or request.form['team'] == '':
+            flash('No selected file')
+            return redirect(request.url)
+
+        with open(app.config['JSON_FILE']) as f:
+            data = json.load(f)
+
+        data['playoffs'][0]['team2'] = request.form['team']
+
+        with open(app.config['JSON_FILE'], 'w') as f:
+            json.dump(data, f)
+
+    return redirect(url_for('index'))
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if request.method == 'GET':
+        return render_template('upload.html')
+
+    elif request.method == 'POST':
+        print request.form['filename']
+
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+
+        if 'filename' not in request.form or request.form['filename'] == '':
+            flash('Invalid filename')
+            return redirect(request.url)
+
+        filename = secure_filename(request.form['filename'])
+        if filename.rsplit('.', 1)[1].lower() not in ['xlsx', 'csv']:
+            flash('Invalid extension')
+            return redirect(request.url)
+
+        file.save(os.path.join('data', filename))
+
+    return redirect(url_for('index'))
+
